@@ -1,0 +1,10 @@
+.main-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 90vh; /* Ajusta la altura según sea necesario */
+    max-width: 800px; /* Ajusta el ancho máximo según sea necesario */
+    margin: 0 auto; /* Centra horizontalmente */
+    padding: 0 30px; /* Agrega espacio a los lados */
+}
