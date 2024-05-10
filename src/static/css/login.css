@@ -1,0 +1,58 @@
+html,
+body {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  background-color: #f5f5f5;
+}
+
+.form-signin {
+  width: 100%;
+  max-width: 330px;
+  padding: 15px;
+  margin: auto;
+}
+
+.form-signin .form-floating:focus-within {
+  z-index: 2;
+}
+
+.form-signin input[type="text"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.form-signin input[type="password"] {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+/* Estilos para el modo claro */
+.form-signin {
+  background-color: #ffffff;
+  color: #000000; /* Color del texto para el modo claro */
+}
+
+/* Estilos para el modo oscuro */
+.modo-oscuro .form-signin {
+  background-color: #353434;
+  color: #ffffff; /* Color del texto para el modo oscuro */
+}
+
+/* Asegura que el color del texto sea visible en los campos de entrada */
+.modo-oscuro .form-signin input[type="text"],
+.modo-oscuro .form-signin input[type="password"] {
+  color: #000000; /* Cambia el color del texto en los campos de entrada para que sea visible en el modo oscuro */
+}
+
+/* Estilos para el modo oscuro */
+.modo-oscuro .form-floating label {
+  color: #060505; /* Cambia el color del texto de las etiquetas de los campos de entrada para el modo oscuro */
+}

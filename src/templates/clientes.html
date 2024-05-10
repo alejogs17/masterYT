@@ -1,0 +1,41 @@
+{% extends './base.html' %}
+
+{% block title %}Cliente{% endblock %}
+
+{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <title>Dashboard </title>
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <a href="#" class="logo">
+            <i class='bx bx-line-chart'></i>
+            <div class="logo-name"><span>Inven</span>Tory</div>
+        </a>
+        <ul class="side-menu">
+            <li {% if request.path == url_for('home') %}class="active"{% endif %}><a href="{{ url_for('home') }}"><i class='bx bxs-dashboard'></i>Panel</a></li>
+
+            <li {% if request.path == url_for('clientes') %}class="active"{% endif %}><a href="{{ url_for('clientes') }}"><i class='bx bx-group'></i>Clientes</a></li>
+            
+            <li><a href="#"><i class='bx bx-basket'></i>Gestion de Productos</a></li>
+            <li><a href="#"><i class='bx bx-cart-add'></i>Gestion de existencia</a></li>
+            <li><a href="#"><i class='bx bx-user-circle'></i>Gestion usuarios</a></li>
+            <li><a href="#"><i class='bx bx-cog'></i>configuraciones</a></li>
+        </ul>
+        <ul class="side-menu">
+            <!-- Cambia el href para redirigir al login -->
+            <li><a href="{{ url_for('login') }}" class="logout"><i class='bx bx-log-out-circle'></i>salir</a></li>
+        </ul>
+    </div>
+{% endblock %}
