@@ -1,3 +1,4 @@
+
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
 from flask_mysqldb import MySQL
 from flask_wtf import FlaskForm
@@ -68,16 +69,16 @@ def clientes():
         cedula = form.cedula.data
         telefono = form.telefono.data
         
-        cliente = Cliente(nombre=nombre, email=email, cedula=cedula, telefono=telefono)
-        db.session.add(cliente)
-        db.session.commit()
-        
+        cur = db.connection.cursor()
+        cur.execute("INSERT INTO clientes (nombre, email, cedula, telefono) VALUES (%s, %s, %s, %s)", (nombre, email, cedula, telefono))
+        db.connection.commit()
         flash('Cliente agregado exitosamente')
         return redirect(url_for('clientes'))
     
-    page = request.args.get('page', 1, type=int)
-    clientes = Cliente.query.paginate(page, per_page=CLIENTES_POR_PAGINA)
-    
+    cur = db.connection.cursor()
+    cur.execute('SELECT * FROM clientes')
+    clientes = cur.fetchall()
+    cur.close()
     return render_template('clientes.html', clientes=clientes, form=form)
 
 @app.route('/edit_cliente/<int:id>', methods=['POST'])
