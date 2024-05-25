@@ -1,10 +1,24 @@
-.main-content {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 90vh; /* Ajusta la altura según sea necesario */
-    max-width: 800px; /* Ajusta el ancho máximo según sea necesario */
-    margin: 0 auto; /* Centra horizontalmente */
-    padding: 0 30px; /* Agrega espacio a los lados */
+.message-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999; /* Asegúrate de que esté por encima de otros elementos */
 }
+
+
+.container {
+    text-align: center; /* Centra horizontalmente el contenido del contenedor */
+    letter-spacing: 1px; /* Ajusta el espacio entre letras */
+}
+
+table {
+    margin: 0 auto; /* Centra horizontalmente la tabla dentro del contenedor */
+    padding: 10px; /* Agrega relleno a la tabla */
+}
+
+th, td {
+    padding: 5px; /* Agrega espacio alrededor del contenido de las celdas */
+}
+
+
+
