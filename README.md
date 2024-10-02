@@ -4,4 +4,6 @@
 
 3. verificar la versión del python a la ultima 
 
-4. ejecutar desde la terminal
+4. ejecutar desde la terminal setup.py para correr el framework 
+
+5. para iniciar  activar el entorno virtual 
