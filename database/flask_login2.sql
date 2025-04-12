@@ -88,6 +88,25 @@ ALTER TABLE `user`
 ALTER TABLE `clientes`
   MODIFY `id` INT NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
+-- Crear la tabla de productos
+CREATE TABLE IF NOT EXISTS productos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(255) NOT NULL,
+    descripcion TEXT,
+    cantidad INT NOT NULL CHECK (cantidad >= 0),
+    precio DECIMAL(10, 2) NOT NULL CHECK (precio >= 0),
+    categoria VARCHAR(255) NOT NULL,
+    fecha_agregado TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Insertar datos en la tabla de productos
+INSERT INTO productos (nombre, descripcion, cantidad, precio, categoria) VALUES
+('Filtro de aire', 'Filtro de aire para motocicletas.', 50, 10.99, 'Repuestos'),
+('Batería', 'Batería de 12V para motocicletas.', 30, 49.99, 'Repuestos'),
+('Aceite de motor', 'Aceite de motor para motocicletas de 1 litro.', 100, 5.99, 'Mantenimiento'),
+('Frenos', 'Juego de frenos para motocicletas.', 20, 39.99, 'Seguridad'),
+('Cadena', 'Cadena para motocicleta, medida estándar.', 75, 19.99, 'Transmisión');
+
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

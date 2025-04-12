@@ -1,39 +1,40 @@
-
 {% extends './base.html' %}
 
-{% block title %}Cliente{% endblock %}
+{% block title %}Clientes{% endblock %}
 
 {% block body %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <!-- Boxicons -->
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <!-- Google Fonts Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons" rel="stylesheet">
+    <!-- Estilos -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/clientes.css') }}">
-
-
-    <title>Dashboard</title>
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<!--google material icon-->
-<link href="https://fonts.googleapis.com/css2?family=Material+Icons"rel="stylesheet">
+
 <body>
+
+    <!-- Flash messages -->
     {% with messages = get_flashed_messages() %}
     {% if messages %}
-        <div class="message-container">
-            {% for message in messages %}
-                <div class="alert alert-primary alert-dismissible" role="alert">
-                    <strong>{{ message }}</strong>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            {% endfor %}
+    <div class="message-container">
+        {% for message in messages %}
+        <div class="alert alert-primary alert-dismissible fade show" role="alert">
+            <strong>{{ message }}</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
         </div>
+        {% endfor %}
+    </div>
     {% endif %}
-{% endwith %}
-
-
+    {% endwith %}
 
     <!-- Sidebar -->
     <div class="sidebar">
@@ -42,58 +43,54 @@
             <div class="logo-name"><span>Inven</span>Tory</div>
         </a>
         <ul class="side-menu">
-            <li {% if request.path == url_for('home') %}class="active"{% endif %}><a href="{{ url_for('home') }}"><i class='bx bxs-dashboard'></i>Panel</a></li>
-
-            <li {% if request.path == url_for('clientes') %}class="active"{% endif %}><a href="{{ url_for('clientes') }}"><i class='bx bx-group'></i>Clientes</a></li>
-            
-            <li><a href="#"><i class='bx bx-basket'></i>Gestión de Productos</a></li>
+            <li {% if request.path == url_for('home') %}class="active"{% endif %}>
+                <a href="{{ url_for('home') }}"><i class='bx bxs-dashboard'></i>Panel</a>
+            </li>
+            <li {% if request.path == url_for('clientes') %}class="active"{% endif %}>
+                <a href="{{ url_for('clientes') }}"><i class='bx bx-group'></i>Clientes</a>
+            </li>
+            <li {% if request.path == url_for('gestion_categorias') %}class="active"{% endif %}>
+                <a href="{{ url_for('gestion_categorias') }}"><i class='bx bx-package'></i>Gestión de Categoria</a>
+            </li>
+            <li><a href="#"><i class='bx bx-cart-add'></i>Gestión de productos</a></li>
             <li><a href="#"><i class='bx bx-cart-add'></i>Gestión de Existencias</a></li>
             <li><a href="#"><i class='bx bx-user-circle'></i>Gestión de Usuarios</a></li>
             <li><a href="#"><i class='bx bx-cog'></i>Configuraciones</a></li>
         </ul>
         <ul class="side-menu">
-            <!-- Cambia el href para redirigir al login -->
-            <li><a href="{{ url_for('login') }}" class="logout"><i class='bx bx-log-out-circle'></i>salir</a></li>
+            <li><a href="{{ url_for('login') }}" class="logout"><i class='bx bx-log-out-circle'></i>Salir</a></li>
         </ul>
     </div>
-    <!-- End of Sidebar -->
 
-    <!-- Main Content -->
+    <!-- Contenido principal -->
     <div class="content">
         <!-- Navbar -->
         <nav>
             <i class='bx bx-menu'></i>
-            <form action="#">
+            <form method="GET" action="{{ url_for('search_clientes') }}">
                 <div class="form-input">
-                    <input type="search" placeholder="Search...">
+                    <input type="search" name="query" placeholder="Buscar cliente..." aria-label="Buscar">
                     <button class="search-btn" type="submit"><i class='bx bx-search'></i></button>
                 </div>
             </form>
             <input type="checkbox" id="theme-toggle" hidden>
             <label for="theme-toggle" class="theme-toggle"></label>
-            <a href="#" class="notif">
-                <i class='bx bx-bell'></i>
-                <span class="count">10
-                </span>
-            </a>
-            <a href="#" class="profile">
-                <img src="{{ url_for('static', filename='img/dashboard.jpg') }}">
-            </a>
+            <a href="#" class="notif"><i class='bx bx-bell'></i><span class="count">10</span></a>
+            <a href="#" class="profile"><img src="{{ url_for('static', filename='img/dashboard.jpg') }}"></a>
         </nav>
-        <!-- End of Navbar -->
-        
-        <!--comienzo del apartado de clientes-->
-        <div class="container">
-            <h1>Lista de Clientes</h1>
-            <table border="1">
-                <thead>
+
+        <!-- Sección de clientes -->
+        <div class="container mt-4">
+            <h1 class="mb-4">Lista de Clientes</h1>
+            <table class="table table-bordered table-striped table-hover text-center">
+                <thead class="thead-dark">
                     <tr>
                         <th>ID</th>
                         <th>Nombre</th>
                         <th>Email</th>
                         <th>Cédula</th>
                         <th>Teléfono</th>
-                        <th>Acciones</th> <!-- Añadimos una columna para acciones -->
+                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -105,161 +102,100 @@
                         <td>{{ cliente[3] }}</td>
                         <td>{{ cliente[4] }}</td>
                         <td>
-                            <!-- Botón para abrir el modal de editar cliente -->
-                            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#editClienteModal{{ cliente[0] }}">
+                            <button type="button" class="btn btn-warning btn-sm" style="font-size: 0.65rem; padding: 0.2rem 0.4rem;" data-bs-toggle="modal" data-bs-target="#editClienteModal{{ cliente[0] }}">
                                 <i class="bx bx-edit"></i> Editar
                             </button>
-                            <!-- Botón para abrir el modal de confirmación de eliminación -->
-            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteClienteModal{{ cliente[0] }}">
-                <i class="bx bx-trash"></i> Eliminar
-            </button>
+                            <button type="button" class="btn btn-danger btn-sm" style="font-size: 0.65rem; padding: 0.2rem 0.4rem;" data-bs-toggle="modal" data-bs-target="#deleteClienteModal{{ cliente[0] }}">
+                                <i class="bx bx-trash"></i> Eliminar
+                            </button>
                         </td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
-            <!-- Botón para abrir el modal de agregar cliente -->
-            
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addClienteModal">
-                Agregar Cliente
-            </button>
+
+            <!-- Botón agregar cliente -->
+            <button class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addClienteModal">Agregar Cliente</button>
         </div>
+
+        <!-- Modal Agregar Cliente -->
+        <div class="modal fade" id="addClienteModal" tabindex="-1" aria-labelledby="addClienteModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <form method="POST" action="{{ url_for('clientes') }}" class="modal-content">
+                    {{ form.hidden_tag() }}
+                    <div class="modal-header">
+                        <h5 class="modal-title">Agregar Cliente</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group mb-2">{{ form.nombre.label }}{{ form.nombre(class="form-control") }}</div>
+                        <div class="form-group mb-2">{{ form.email.label }}{{ form.email(class="form-control") }}</div>
+                        <div class="form-group mb-2">{{ form.cedula.label }}{{ form.cedula(class="form-control") }}</div>
+                        <div class="form-group mb-2">{{ form.telefono.label }}{{ form.telefono(class="form-control") }}</div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Modales de edición -->
+        {% for cliente in clientes %}
+        <div class="modal fade" id="editClienteModal{{ cliente[0] }}" tabindex="-1" aria-labelledby="editClienteModalLabel{{ cliente[0] }}" aria-hidden="true">
+            <div class="modal-dialog">
+                <form method="POST" action="{{ url_for('edit_cliente', id=cliente[0]) }}" class="modal-content">
+                    {{ form.csrf_token }}
+                    <div class="modal-header">
+                        <h5 class="modal-title">Editar Cliente</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="text" name="nombre" class="form-control mb-2" value="{{ cliente[1] }}" required>
+                        <input type="email" name="email" class="form-control mb-2" value="{{ cliente[2] }}" required>
+                        <input type="text" name="cedula" class="form-control mb-2" value="{{ cliente[3] }}" required>
+                        <input type="text" name="telefono" class="form-control mb-2" value="{{ cliente[4] }}" required>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+
+        <!-- Modales de eliminación -->
+        {% for cliente in clientes %}
         
-            
         
-            <!-- Modal de Agregar Cliente -->
-            <div class="modal fade" id="addClienteModal" tabindex="-1" role="dialog" aria-labelledby="addClienteModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="addClienteModalLabel">Agregar Cliente</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <!-- Formulario para ingresar los detalles del nuevo cliente -->
-                            <form method="POST" action="{{ url_for('clientes') }}">
-                                {{ form.hidden_tag() }}
-                                <div class="form-group">
-                                    {{ form.nombre.label(class="form-label") }}
-                                    {{ form.nombre(class="form-control") }}
-                                </div>
-                                <div class="form-group">
-                                    {{ form.email.label(class="form-label") }}
-                                    {{ form.email(class="form-control") }}
-                                </div>
-                                <div class="form-group">
-                                    {{ form.cedula.label(class="form-label") }}
-                                    {{ form.cedula(class="form-control") }}
-                                </div>
-                                <div class="form-group">
-                                    {{ form.telefono.label(class="form-label") }}
-                                    {{ form.telefono(class="form-control") }}
-                                </div>
-                                <!-- Botón para enviar el formulario -->
-                                <button type="submit" class="btn btn-primary">Guardar</button>
-                            </form>
-                        </div>
+        <div class="modal fade" id="deleteClienteModal{{ cliente[0] }}" tabindex="-1" aria-labelledby="deleteClienteModalLabel{{ cliente[0] }}" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Confirmar Eliminación</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    </div>
+                    <div class="modal-body">
+                        ¿Estás seguro de que deseas eliminar a <strong>{{ cliente[1] }}</strong>?
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <form action="{{ url_for('delete_cliente', id=cliente[0]) }}" method="POST">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <button type="submit" class="btn btn-danger">Eliminar</button>
+                        </form>
+                      
                     </div>
                 </div>
             </div>
         </div>
-            <!----------modal de editar clientes----------->
-            <!-- Modal de Editar Cliente -->
-            {% for cliente in clientes %}
-            <div class="modal fade" id="editClienteModal{{ cliente[0] }}" tabindex="-1" role="dialog" aria-labelledby="editClienteModalLabel{{ cliente[0] }}" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="editClienteModalLabel{{ cliente[0] }}">Editar Cliente</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <!-- Formulario para editar los detalles del cliente -->
-                            <form action="{{ url_for('edit_cliente', id=cliente[0]) }}" method="POST">
-                                {{ form.csrf_token }}
-                                <div class="form-group">
-                                    <label for="nombre">Nombre:</label>
-                                    <input type="text" class="form-control" id="nombre" name="nombre" value="{{ cliente[1] }}" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="email">Email:</label>
-                                    <input type="email" class="form-control" id="email" name="email" value="{{ cliente[2] }}" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="cedula">Cédula:</label>
-                                    <input type="text" class="form-control" id="cedula" name="cedula" value="{{ cliente[3] }}" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="telefono">Teléfono:</label>
-                                    <input type="text" class="form-control" id="telefono" name="telefono" value="{{ cliente[4] }}" required>
-                                </div>
-                                <button type="submit" class="btn btn-primary">Guardar Cambios</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
-            <!-- Modal de confirmación de eliminación -->
-    {% for cliente in clientes %}
-    <div class="modal fade" id="deleteClienteModal{{ cliente[0] }}" tabindex="-1" role="dialog" aria-labelledby="deleteClienteModalLabel{{ cliente[0] }}" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="deleteClienteModalLabel{{ cliente[0] }}">Confirmar Eliminación</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    ¿Estás seguro de que deseas eliminar el cliente "{{ cliente[1] }}"?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                    <a href="{{ url_for('delete_cliente', id=cliente[0]) }}" class="btn btn-danger">Eliminar</a>
-                </div>
-            </div>
-        </div>
-    </div>
-    {% endfor %}
+        {% endfor %}
 
+    </div> <!-- Fin del contenido -->
 
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-  
-     <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-   <script src="static/js/jquery-3.3.1.slim.min.js"></script>
-   <script src="static/js/popper.min.js"></script>
-   <script src="static/js/bootstrap.min.js"></script>
-   <script src="static/js/jquery-3.3.1.min.js"></script>
-  
-  
-  <script type="text/javascript">
-        
-		$(document).ready(function(){
-		  $(".xp-menubar").on('click',function(){
-		    $('#sidebar').toggleClass('active');
-			$('#content').toggleClass('active');
-		  });
-		  
-		   $(".xp-menubar,.body-overlay").on('click',function(){
-		     $('#sidebar,.body-overlay').toggleClass('show-nav');
-		   });
-		  
-		});
-		
-</script>
-  
-  
-
-
-
-  </body>
-  
+</body>
+</html>
 {% endblock %}
-=======
->>>>>>> e1f16a73fb3212104d3f9583d926286d4b54e60c

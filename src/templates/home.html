@@ -2,125 +2,104 @@
 
 {% block title %}Home{% endblock %}
 
+{% block customCSS %}
+<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+{% endblock %}
+
 {% block body %}
-<!DOCTYPE html>
-<html lang="en">
+<!-- Sidebar -->
+<div class="sidebar">
+    <a href="#" class="logo">
+        <i class='bx bx-line-chart'></i>
+        <div class="logo-name"><span>Inven</span>Tory</div>
+    </a>
+    <ul class="side-menu">
+        <li class="active"><a href="#"><i class='bx bxs-dashboard'></i>Panel</a></li>
+        <li><a href="{{ url_for('clientes') }}"><i class='bx bx-group'></i>Clientes</a></li>
+        <li {% if request.path == url_for('gestion_categorias') %}class="active"{% endif %}>
+            <a href="{{ url_for('gestion_categorias') }}"><i class='bx bx-group'></i>Gestión de Productos</a>
+        </li>
+        <li><a href="#"><i class='bx bx-cart-add'></i>Gestión de productos</a></li>
+        <li><a href="#"><i class='bx bx-cart-add'></i>Gestión de Existencia</a></li>
+        <li><a href="#"><i class='bx bx-user-circle'></i>Gestión de Usuarios</a></li>
+        <li><a href="#"><i class='bx bx-cog'></i>Configuraciones</a></li>
+    </ul>
+    <ul class="side-menu">
+        <li><a href="{{ url_for('logout') }}" class="logout"><i class='bx bx-log-out-circle'></i>Salir</a></li>
+    </ul>
+</div>
+<!-- End of Sidebar -->
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-
-    <title>Dashboard </title>
-</head>
-
-<body>
-
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <a href="#" class="logo">
-            <i class='bx bx-line-chart'></i>
-            <div class="logo-name"><span>Inven</span>Tory</div>
+<!-- Main Content -->
+<div class="content">
+    <!-- Navbar -->
+    <nav>
+        <i class='bx bx-menu'></i>
+        <form action="#">
+            <div></div>
+        </form>
+        <input type="checkbox" id="theme-toggle" hidden>
+        <label for="theme-toggle" class="theme-toggle"></label>
+        <a href="#" class="notif">
+            <i class='bx bx-bell'></i>
+            <span class="count">10</span>
         </a>
-        <ul class="side-menu">
-            <li class="active"><a href="#"><i class='bx bxs-dashboard'></i>Panel</a></li>
+        <a href="#" class="profile">
+            <img src="{{ url_for('static', filename='img/dashboard.jpg') }}">
+        </a>
+    </nav>
+    <!-- End of Navbar -->
 
-            <li><a href="{{ url_for('clientes') }}"><i class='bx bx-group'></i>Clientes</a></li>
-            <li><a href="#"><i class='bx bx-basket'></i>Gestion de Productos</a></li>
-            <li><a href="#"><i class='bx bx-cart-add'></i>Gestion de existencia</a></li>
-            <li><a href="#"><i class='bx bx-user-circle'></i>Gestion usuarios</a></li>
-            <li><a href="#"><i class='bx bx-cog'></i>configuraciones</a></li>
-        </ul>
-        <ul class="side-menu">
-            <!-- Cambia el href para redirigir al login -->
-            <li><a href="{{ url_for('login') }}" class="logout"><i class='bx bx-log-out-circle'></i>salir</a></li>
-        </ul>
-    </div>
-    <!-- End of Sidebar -->
-
-    <!-- Main Content -->
-    <div class="content">
-        <!-- Navbar -->
-        <nav>
-            <i class='bx bx-menu'></i>
-            <form action="#">
-                <div class="form-input">
-                    <input type="search" placeholder="Search...">
-                    <button class="search-btn" type="submit"><i class='bx bx-search'></i></button>
-                </div>
-            </form>
-            <input type="checkbox" id="theme-toggle" hidden>
-            <label for="theme-toggle" class="theme-toggle"></label>
-            <a href="#" class="notif">
-                <i class='bx bx-bell'></i>
-                <span class="count">10
-                </span>
-            </a>
-            <a href="#" class="profile">
-                <img src="{{ url_for('static', filename='img/dashboard.jpg') }}">
-            </a>
-        </nav>
-        <!-- End of Navbar -->
-
-        <main>
-            <div class="header">
-                <div class="left">
-                    <h1>Panel</h1>
-                    <ul class="breadcrumb">
-                        <li><a href="#" class="active">Analisis</a></li>
-                    </ul>
-                </div>
-                <a href="#" class="report">
-                    <i class='bx bx-cloud-download'></i>
-                    <span>Download PDF</span>
-                </a>
+    <main>
+        <div class="header">
+            <div class="left">
+                <h1>Panel</h1>
+                <ul class="breadcrumb">
+                    <li><a href="#" class="active">Análisis</a></li>
+                </ul>
             </div>
+            <a href="#" class="report">
+                <i class='bx bx-cloud-download'></i>
+                <span>Download PDF</span>
+            </a>
+        </div>
 
-            <!-- Insights -->
-            <ul class="insights">
-                <li>
-                    <i class='bx bx-street-view'></i>
-                    <span class="info">
-                        <p>clientes
-                            <h3>
-                            <h3> 
-                        </p>
-                    </span>
-                </li>
-                <li><i class='bx bx-group'></i>
-                    <span class="info">
-                        </h3>
-                    </p>Provedores</p>
-                        <h3>
-                            
-                    </span>
-                </li>
-                <li><i class='bx bx-closet'></i>
-                    <span class="info">
-                        </h3>
-                        <p>Productos</p>
-                        <h3>
-                            
-                    </span>
-                </li>
-                <li><i class='bx bx-dollar-circle'></i>
-                    <span class="info">
-                        <h3>
-                            
-                        </h3>
-                        <p>Total Sales</p>
-                    </span>
-                </li>
-            </ul>
-            <!-- End of Insights -->
+        <!-- Insights -->
+        <ul class="insights">
+            <li>
+                <i class='bx bx-street-view'></i>
+                <span class="info">
+                    <p>Clientes</p>
+                    <h3>250</h3>
+                </span>
+            </li>
+            <li>
+                <i class='bx bx-group'></i>
+                <span class="info">
+                    <p>Proveedores</p>
+                    <h3>50</h3>
+                </span>
+            </li>
+            <li>
+                <i class='bx bx-closet'></i>
+                <span class="info">
+                    <p>Productos</p>
+                    <h3>1000</h3>
+                </span>
+            </li>
+            <li>
+                <i class='bx bx-dollar-circle'></i>
+                <span class="info">
+                    <p>Total Ventas</p>
+                    <h3>$15,000</h3>
+                </span>
+            </li>
+        </ul>
+        <!-- End of Insights -->
 
-        </main>
+    </main>
+</div>
 
-    </div>
-
-    <script src="{{ url_for('static', filename='js/index.js') }}"></script>
-</body>
-
-</html>
+<script src="{{ url_for('static', filename='js/index.js') }}"></script>
 {% endblock %}

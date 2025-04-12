@@ -1,0 +1,115 @@
+{% extends './base.html' %}
+
+{% block title %}Gestión de Categorías{% endblock %}
+
+{% block customCSS %}
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+{% endblock %}
+
+{% block body %}
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div class="message-container">
+            {% for message in messages %}
+                <div class="alert alert-primary alert-dismissible" role="alert">
+                    <strong>{{ message }}</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+    {% endwith %}
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <a href="#" class="logo">
+            <i class='bx bx-line-chart'></i>
+            <div class="logo-name"><span>Inven</span>Tory</div>
+        </a>
+        <ul class="side-menu">
+            <li {% if request.path == url_for('home') %}class="active"{% endif %}><a href="{{ url_for('home') }}"><i class='bx bxs-dashboard'></i>Panel</a></li>
+            <li {% if request.path == url_for('clientes') %}class="active"{% endif %}><a href="{{ url_for('clientes') }}"><i class='bx bx-group'></i>Clientes</a></li>
+            <li {% if request.path == url_for('gestion_categorias') %}class="active"{% endif %}><a href="{{ url_for('gestion_categorias')}}"><i class='bx bx-box'></i>Gestión de Categorías</a></li>
+            <li><a href="#"><i class='bx bx-cart-add'></i>Gestión de productos</a></li>
+            <li><a href="#"><i class='bx bx-cart-add'></i>Gestión de Existencias</a></li>
+            <li><a href="#"><i class='bx bx-user-circle'></i>Gestión de Usuarios</a></li>
+            <li><a href="#"><i class='bx bx-cog'></i>Configuraciones</a></li>
+        </ul>
+        <ul class="side-menu">
+            <li><a href="{{ url_for('login') }}" class="logout"><i class='bx bx-log-out-circle'></i>Salir</a></li>
+        </ul>
+    </div>
+    <!-- End of Sidebar -->
+
+    <!-- Main Content -->
+    <div class="content">
+        <nav>
+            <i class='bx bx-menu'></i>
+            <form method="POST" action="{{ url_for('gestion_categorias') }}">
+                {{ form.hidden_tag() }}
+                <div class="form-input">
+                    <input type="search" name="query" placeholder="Buscar producto..." aria-label="Buscar">
+                    <button class="search-btn" type="submit"><i class='bx bx-search'></i></button>
+                </div>
+            </form>
+            <input type="checkbox" id="theme-toggle" hidden>
+            <label for="theme-toggle" class="theme-toggle"></label>
+            <a href="#" class="notif">
+                <i class='bx bx-bell'></i>
+                <span class="count">10</span>
+            </a>
+            <a href="#" class="profile">
+                <img src="{{ url_for('static', filename='img/dashboard.jpg') }}">
+            </a>
+        </nav>
+        
+        <div class="container mt-4">
+            <h1 class="mb-4">CATEGORÍA</h1>
+                <table class="table table-bordered table-striped table-hover text-center">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Descripción</th>
+                            <th>Categoría</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for categoria in categorias %}
+                        <tr>
+                            <td>{{ categoria[0] }}</td>
+                            <td>{{ categoria[1] }}</td>
+                            <td>{{ categoria[2] }}</td>
+                            <td>{{ categoria[3] }}</td>
+                            <td>
+                                <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editCategoriaModal{{ categoria[0] }}">
+                                    <i class="bx bx-edit"></i> Editar
+                                </button>
+                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteCategoriaModal{{ categoria[0] }}">
+                                    <i class="bx bx-trash"></i> Eliminar
+                                </button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addProductoModal">
+                Agregar Producto
+            </button>
+        </div>
+
+        <!-- Aquí irían los modales, los mantienes como están pero sin duplicar body/html -->
+        <!-- Incluye tus modales aquí -->
+
+        <!-- Scripts adicionales -->
+        <script src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
+        <script>
+            
+        </script>
+    </div>
+{% endblock %}

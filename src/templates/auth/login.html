@@ -1,46 +1,61 @@
-{% extends './base.html' %}
+{% extends './base.html' %}  <!-- Hereda estructura desde base.html -->
 
-{% block title %}Login{% endblock %}
+{% block title %}Login{% endblock %}  <!-- Título de la pestaña -->
 
 {% block customCSS %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+<!-- Carga CSS personalizado específico para login -->
+<link rel="stylesheet" href="css/login.css">
 {% endblock %}
 
 {% block body %}
+<!-- Formulario de inicio de sesión -->
 <form class="form-signin" action="/login" method="POST">
+    <!-- Logo institucional o de tu app -->
     <img class="mb-4" src="{{ url_for('static', filename='img/logo.png') }}" alt="" width="180" height="100">
+    
+    {{ form.hidden_tag() }}  <!-- Campo oculto para CSRF token (seguridad) -->
+
+    <!-- Muestra mensajes flash de error o éxito -->
     {% with messages = get_flashed_messages() %}
-
-    {% if messages %}
-    <br />
-    {% for message in messages %}
-    <div class="alert alert-primary alert-dismissible" role="alert">
-        <strong>{{ message }}</strong>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-    {% endfor %}
-    {% endif %}
-
+        {% if messages %}
+        <br />
+        {% for message in messages %}
+        <div class="alert alert-primary alert-dismissible" role="alert">
+            <strong>{{ message }}</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+        {% endif %}
     {% endwith %}
+
+    <!-- Título del formulario -->
     <h1 class="h3 mb-3 fw-normal">INICIO DE SESIÓN</h1>
-    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+    <!-- Campo: Username -->
     <div class="form-floating">
-        <input type="text" class="form-control" id="username" name="username" placeholder="Username">
+        {{ form.username(class="form-control", placeholder="Username") }}
         <label for="username">Username</label>
     </div>
+
+    <!-- Campo: Password -->
     <div class="form-floating mt-2">
-        <input type="password" class="form-control" name="password" placeholder="Password">
+        {{ form.password(class="form-control", placeholder="Password") }}
         <label for="password">Password</label>
     </div>
-    <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
+
+    <!-- Botón de inicio de sesión -->
+    <button class="w-100 btn btn-lg btn-primary" type="submit">{{ form.submit.label }}</button>
+
+    <!-- Botón para cambiar a modo oscuro -->
     <button class="w-100 btn btn-lg btn-secondary mt-3" id="modoBoton">Modo Oscuro</button>
 </form>
+
+<!-- Script para cambiar el modo del cuerpo (clase CSS) -->
 <script>
     const modoBoton = document.getElementById('modoBoton');
     modoBoton.addEventListener('click', function (event) {
-        event.preventDefault(); // Evita que el formulario se envíe
-        document.body.classList.toggle('modo-oscuro');
+        event.preventDefault(); // Evita que el botón recargue la página
+        document.body.classList.toggle('modo-oscuro'); // Cambia la clase
     });
 </script>
-
 {% endblock %}
